@@ -1,0 +1,29 @@
+{
+  "apiVersion": "2",
+  "name": "mcp-example",
+  "contextPath": "mcp-example",
+  "key": "mcp-example-application-key",
+  "version": "0.0.1-SNAPSHOT",
+  "provider": {
+    "name": "Cumulocity GmbH"
+  },
+  "type": "MICROSERVICE",
+  "isolation": "MULTI_TENANT",
+  "scale": "NONE",
+  "requestedResources": {
+    "memory": "128M",
+    "cpu": "100m"
+  },
+  "description": "An example MCP application demonstrating AI Tools.",
+  "resources": {
+    "memory": "512M",
+    "cpu": "1000m"
+  },
+  "roles": [],
+  "requiredRoles": [
+    "ROLE_INVENTORY_READ",
+    "ROLE_USER_MANAGEMENT_READ",
+    "ROLE_OPTION_MANAGEMENT_ADMIN",
+    "ROLE_OPTION_MANAGEMENT_READ"
+  ]
+}
