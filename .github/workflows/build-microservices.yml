@@ -6,17 +6,6 @@ on:
         description: "Version of mcp-example to be built."
         required: true
         type: string
-      uploadSBOM:
-        description: "If SBOM should be uploaded"
-        required: false
-        type: boolean
-    secrets:
-      GENERIC_APP_ENABLEMENT_GH_PAT:
-        required: false
-      C8Y_TPSAFE_API_KEY:
-        required: false
-      C8Y_TPSAFE_RULES_APP_PRIVATE_KEY:
-        required: false
 
 env:
   NODE_VERSION: ${{ '24' }}
