@@ -48,12 +48,6 @@ jobs:
         run: |
           cat manifest.json | jq --arg version "${{ inputs.version }}" '.version = $version' > .tmp.json && mv .tmp.json manifest.json
 
-      - name: Get Base image
-        id: base-image
-        run: |
-          baseImage=$(cat ./Dockerfile | grep 'FROM' | head -1 | sed -e 's/FROM\s*//' | sed -e 's/\s*AS.*//')
-          echo "Base image: $baseImage"
-          echo "image=$baseImage" >> $GITHUB_OUTPUT
 
       - name: Build microservice
         run: |
