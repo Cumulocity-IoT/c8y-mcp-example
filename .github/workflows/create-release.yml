@@ -57,8 +57,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            .tmp/mcp-example-${{ needs.setup-env.outputs.version }}.zip
-            .tmp/sbom/*.json
+            .tmp/mcp-example.zip
           generate_release_notes: true
           draft: false
           prerelease: false

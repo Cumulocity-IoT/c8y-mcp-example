@@ -42,7 +42,7 @@ jobs:
           mkdir -p .tmp
           docker save mcp-example > "image.tar"
           cp manifest.json cumulocity.json
-          zip .tmp/mcp-example-${{ inputs.version }}.zip cumulocity.json image.tar
+          zip .tmp/mcp-example.zip cumulocity.json image.tar
           rm cumulocity.json
           rm image.tar
 
@@ -53,5 +53,5 @@ jobs:
           if-no-files-found: error
           retention-days: 5
           path: |
-            .tmp/mcp-example-${{ inputs.version }}.zip
+            .tmp/mcp-example.zip
 
