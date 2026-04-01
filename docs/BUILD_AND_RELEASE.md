@@ -57,7 +57,6 @@ This workflow:
 2. Builds the microservice using the reusable build workflow
 3. Creates a GitHub Release with:
    - Microservice ZIP file
-   - SBOM (Software Bill of Materials)
    - Auto-generated release notes
 
 ### 4. Build Microservices (`build-microservices.yml`)
