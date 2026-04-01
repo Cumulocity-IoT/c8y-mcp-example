@@ -127,9 +127,6 @@ The ZIP file contains:
 Configure these secrets in GitHub repository settings:
 
 - `GITHUB_TOKEN` - Automatically provided by GitHub Actions
-- `GENERIC_APP_ENABLEMENT_GH_PAT` - (Optional) For private npm packages
-- `C8Y_TPSAFE_API_KEY` - (Optional) For compliance scanning
-- `C8Y_TPSAFE_RULES_APP_PRIVATE_KEY` - (Optional) For compliance scanning
 
 ## Deployment
 
