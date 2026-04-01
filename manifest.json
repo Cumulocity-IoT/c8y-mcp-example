@@ -3,7 +3,7 @@
   "name": "mcp-example",
   "contextPath": "mcp-example",
   "key": "mcp-example-application-key",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "1.0.0",
   "provider": {
     "name": "Cumulocity GmbH"
   },
