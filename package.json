@@ -18,7 +18,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "extract-openapi": "start-server-and-test \"start:dev\" \"http-get://localhost:3000/health\" \"download-openapi\"",
     "download-openapi": "curl -o ./openapi.json http://localhost:3000/api-json && curl -o ./openapi.yaml http://localhost:3000/api-yaml",
-    "docker:build": "docker buildx build --squash --progress=plain -t mcp-example --target=production -f ./Dockerfile .  && mkdir -p dist && docker save mcp-example > dist/image.tar && yarn zip:mcp-example",
+    "docker:build": "docker buildx build --squash --progress=plain -t mcp-example --target=production -f ./Dockerfile .",
+    "build:microservice": "yarn docker:build && mkdir -p dist && docker save mcp-example > dist/image.tar && yarn zip:mcp-example",
     "zip:mcp-example": "cp ./manifest.json ./dist/cumulocity.json && cd dist && zip mcp-example.zip cumulocity.json image.tar"
   },
   "dependencies": {
