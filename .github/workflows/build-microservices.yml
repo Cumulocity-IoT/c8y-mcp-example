@@ -74,28 +74,3 @@ jobs:
           path: |
             .tmp/mcp-example-${{ inputs.version }}.zip
 
-      - name: Create SBOM folder
-        if: inputs.uploadSBOM
-        run: |
-          mkdir -p .tmp/sbom
-
-      - name: Run Trivy vulnerability scanner
-        if: inputs.uploadSBOM
-        uses: aquasecurity/trivy-action@master
-        env:
-          TRIVY_INSECURE: true
-        with:
-          scan-type: image
-          image-ref: mcp-example
-          format: 'cyclonedx'
-          output: '.tmp/sbom/mcp-example-${{ inputs.version }}-sbom.json'
-
-      - name: Upload SBOM as artifact
-        if: inputs.uploadSBOM
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom-${{ inputs.version }}
-          if-no-files-found: error
-          retention-days: 5
-          path: |
-            .tmp/sbom/mcp-example-${{ inputs.version }}-sbom.json
