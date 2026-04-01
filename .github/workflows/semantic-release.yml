@@ -65,3 +65,12 @@ jobs:
         run: |
           echo "Initial version: ${{ steps.save-initial-version.outputs.version }}"
           echo "New version: ${{ steps.save-new-version.outputs.version }}"
+
+      - name: Trigger create-release workflow
+        if: ${{ steps.save-initial-version.outputs.version != steps.save-new-version.outputs.version }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run create-release.yml \
+            --repo ${{ github.repository }} \
+            --ref v${{ steps.save-new-version.outputs.version }}
