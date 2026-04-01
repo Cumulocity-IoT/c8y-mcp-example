@@ -42,7 +42,7 @@ jobs:
 
       - name: Set version
         run: |
-          yarn version "${{ inputs.version }}"
+          yarn version --new-version "${{ inputs.version }}" --no-git-tag-version
 
       - name: Align version in manifest
         run: |
