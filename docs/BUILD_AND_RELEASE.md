@@ -8,7 +8,6 @@ The build and release process uses:
 - **Semantic Release**: Automated versioning based on conventional commits
 - **GitHub Actions**: CI/CD workflows for building and releasing
 - **Docker**: Containerization of the microservice
-- **Trivy**: Security scanning and SBOM generation
 
 ## Workflows
 
