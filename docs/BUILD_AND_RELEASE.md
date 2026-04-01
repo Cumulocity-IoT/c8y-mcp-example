@@ -69,7 +69,6 @@ This workflow:
 4. Builds Docker image
 5. Creates microservice ZIP file (image.tar + cumulocity.json)
 6. Runs Trivy security scan
-7. Generates SBOM
 8. Uploads artifacts
 
 ## Release Process
