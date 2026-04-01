@@ -32,10 +32,10 @@ jobs:
           echo "::error ::Add the run-ci-on-draft label to your draft PR if the pipeline should run."
           exit 1
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Use Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
 

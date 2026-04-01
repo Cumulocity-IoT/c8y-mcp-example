@@ -2,31 +2,25 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM redhat/ubi9-minimal:9.7 AS nodejs
+FROM alpine:3.23.3 AS nodejs
 
 # Install nodejs
-RUN adduser -U -u 1000 -s /bin/sh node && \
-    microdnf -y module disable nodejs && \
-    microdnf -y module enable nodejs:24 && \
-    microdnf install shadow-utils nodejs which -y && \
-    microdnf remove nodejs-full-i18n npm nodejs-docs -y && \
-    microdnf clean all && \
-    rm -rf /mnt/rootfs/var/cache/* /mnt/rootfs/var/log/dnf* /mnt/rootfs/var/log/yum.* && \
+RUN addgroup -S node && \
+    adduser -S node -G node && \
+    apk add --no-cache nodejs && \
     node -v
 
 # allow node to bind to port 80
 # This is required for the application to run on port 80 without root privileges
-RUN setcap CAP_NET_BIND_SERVICE=+eip $(which node)
+RUN apk add --no-cache libcap && \
+    setcap CAP_NET_BIND_SERVICE=+eip $(which node)
 
 FROM nodejs AS nodejs-and-yarn
 
 # Install yarn
-RUN microdnf install npm -y && \
-    microdnf clean all && \
-    rm -rf /mnt/rootfs/var/cache/* /mnt/rootfs/var/log/dnf* /mnt/rootfs/var/log/yum.*
-
-RUN npm install -g corepack
-RUN corepack enable
+RUN apk add --no-cache npm && \
+    npm install -g corepack && \
+    corepack enable
 
 FROM nodejs-and-yarn AS development
 
@@ -57,7 +51,6 @@ COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modul
 COPY --chown=node:node ./ ./
 COPY --chown=node:node package.json ./
 COPY --chown=node:node yarn.lock ./
-
 
 # Run the build command which creates the production bundle
 RUN yarn build
