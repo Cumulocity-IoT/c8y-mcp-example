@@ -42,7 +42,7 @@
         [
             "@semantic-release/exec",
             {
-                "prepareCmd": "yarn version --new-version ${nextRelease.version} --no-git-tag-version"
+                "prepareCmd": "yarn version --new-version ${nextRelease.version} --no-git-tag-version && cat manifest.json | jq --arg version \"${nextRelease.version}\" '.version = $version' > .tmp.json && mv .tmp.json manifest.json"
             }
         ],
         [
@@ -50,6 +50,7 @@
             {
                 "assets": [
                     "package.json",
+                    "manifest.json",
                     "CHANGELOG.md"
                 ],
                 "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
