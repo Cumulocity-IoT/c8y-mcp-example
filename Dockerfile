@@ -22,7 +22,6 @@ FROM nodejs AS nodejs-and-yarn
 
 # Install yarn
 RUN microdnf install npm -y && \
-    microdnf remove nodejs-docs -y && \
     microdnf clean all && \
     rm -rf /mnt/rootfs/var/cache/* /mnt/rootfs/var/log/dnf* /mnt/rootfs/var/log/yum.*
 
