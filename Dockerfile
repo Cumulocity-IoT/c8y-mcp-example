@@ -2,12 +2,12 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM redhat/ubi9-minimal:9.6 AS nodejs
+FROM redhat/ubi9-minimal:9.7 AS nodejs
 
 # Install nodejs
 RUN adduser -U -u 1000 -s /bin/sh node && \
     microdnf -y module disable nodejs && \
-    microdnf -y module enable nodejs:20 && \
+    microdnf -y module enable nodejs:24 && \
     microdnf install shadow-utils nodejs which -y && \
     microdnf remove nodejs-full-i18n npm nodejs-docs -y && \
     microdnf clean all && \
@@ -22,7 +22,6 @@ FROM nodejs AS nodejs-and-yarn
 
 # Install yarn
 RUN microdnf install npm -y && \
-    microdnf remove nodejs-docs -y && \
     microdnf clean all && \
     rm -rf /mnt/rootfs/var/cache/* /mnt/rootfs/var/log/dnf* /mnt/rootfs/var/log/yum.*
 

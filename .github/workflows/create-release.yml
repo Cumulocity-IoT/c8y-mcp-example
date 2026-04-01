@@ -1,0 +1,63 @@
+name: Create release
+on:
+  push:
+    tags:
+      - v*.*.*
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CYPRESS_INSTALL_BINARY: 0
+
+jobs:
+  # https://github.com/orgs/community/discussions/26671
+  setup-env:
+    name: Setup env
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.save-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Save Version
+        id: save-version
+        run: echo "version=$(cat package.json | jq '.version' | xargs)" >> $GITHUB_OUTPUT
+
+  build-microservices:
+    name: Build microservices
+    needs: [setup-env]
+    uses: ./.github/workflows/build-microservices.yml
+    with:
+        version: ${{ needs.setup-env.outputs.version }}
+
+  release:
+    name: Create Release on Github and upload artifacts
+    needs: 
+      - setup-env
+      - build-microservices
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    timeout-minutes: 15
+    steps:
+      - name: Download microservices
+        uses: actions/download-artifact@v4
+        with:
+          name: microservices-${{ needs.setup-env.outputs.version }}
+          path: .tmp
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            .tmp/mcp-example.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false

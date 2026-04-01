@@ -1,0 +1,57 @@
+name: Reusable build microservices
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: "Version of mcp-example to be built."
+        required: true
+        type: string
+
+env:
+  NODE_VERSION: ${{ '24' }}
+
+jobs:
+  build-microservices:
+    name: Build microservices
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Set version
+        run: |
+          yarn version --new-version "${{ inputs.version }}" --no-git-tag-version
+
+      - name: Align version in manifest
+        run: |
+          cat manifest.json | jq --arg version "${{ inputs.version }}" '.version = $version' > .tmp.json && mv .tmp.json manifest.json
+
+
+      - name: Build microservice
+        run: |
+          DOCKER_BUILDKIT=1 docker build --squash --progress=plain -t mcp-example --target=production -f ./Dockerfile .
+          mkdir -p .tmp
+          docker save mcp-example > "image.tar"
+          cp manifest.json cumulocity.json
+          zip .tmp/mcp-example.zip cumulocity.json image.tar
+          rm cumulocity.json
+          rm image.tar
+
+      - name: Upload microservice as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: microservices-${{ inputs.version }}
+          if-no-files-found: error
+          retention-days: 5
+          path: |
+            .tmp/mcp-example.zip
+

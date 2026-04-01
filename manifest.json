@@ -25,5 +25,12 @@
     "ROLE_USER_MANAGEMENT_READ",
     "ROLE_OPTION_MANAGEMENT_ADMIN",
     "ROLE_OPTION_MANAGEMENT_READ"
-  ]
+  ],
+  "exposeMcpServer": {
+    "name": "mcp-example-exposed-server",
+    "description": "Custom MCP example server",
+    "url": "/service/mcp-example/sse",
+    "type": "sse",
+    "sendAuthentication": true
+  }
 }
