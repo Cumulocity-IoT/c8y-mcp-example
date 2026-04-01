@@ -27,8 +27,8 @@
     "ROLE_OPTION_MANAGEMENT_READ"
   ],
   "exposeMcpServer": {
-    "name": "mcp-example-example-server",
-    "description": "Custom MCP server for XYZ features",
+    "name": "mcp-example-exposed-server",
+    "description": "Custom MCP example server",
     "url": "/service/mcp-example/sse",
     "type": "sse",
     "sendAuthentication": true
