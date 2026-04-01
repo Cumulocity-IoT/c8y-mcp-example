@@ -49,11 +49,6 @@ jobs:
     uses: ./.github/workflows/build-microservices.yml
     with:
       version: ${{ needs.setup-env.outputs.version }}
-      uploadSBOM: false
-    secrets:
-      GENERIC_APP_ENABLEMENT_GH_PAT: ${{ secrets.GENERIC_APP_ENABLEMENT_GH_PAT }}
-      C8Y_TPSAFE_API_KEY: ${{ secrets.C8Y_TPSAFE_API_KEY }}
-      C8Y_TPSAFE_RULES_APP_PRIVATE_KEY: ${{ secrets.C8Y_TPSAFE_RULES_APP_PRIVATE_KEY }}
 
   pipeline-success:
     name: Pipeline success
