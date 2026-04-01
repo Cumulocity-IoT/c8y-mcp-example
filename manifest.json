@@ -31,6 +31,6 @@
     "description": "Custom MCP example server",
     "url": "/service/mcp-example/sse",
     "type": "sse",
-    "sendAuthentication": true
+    "sendAuthentication": false
   }
 }
