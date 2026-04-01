@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Cumulocity-IoT/c8y-mcp-example/compare/v1.0.0...v1.0.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* [MTM-66480] Change image to alpine. Update actions in workflows. ([7f4b72c](https://github.com/Cumulocity-IoT/c8y-mcp-example/commit/7f4b72caae1f75a214f2b7c3f4333ad3864c465a))
+
 # 1.0.0 (2026-04-01)
 
 
