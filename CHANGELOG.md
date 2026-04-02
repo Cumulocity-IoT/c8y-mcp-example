@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Cumulocity-IoT/c8y-mcp-example/compare/v1.0.1...v1.1.0) (2026-04-02)
+
+
+### Features
+
+* [MTM-66480] Expose array of mcp servers ([#3](https://github.com/Cumulocity-IoT/c8y-mcp-example/issues/3)) ([fd41275](https://github.com/Cumulocity-IoT/c8y-mcp-example/commit/fd4127595aadfd362a920c05d932d6eaf847367e))
+
 ## [1.0.1](https://github.com/Cumulocity-IoT/c8y-mcp-example/compare/v1.0.0...v1.0.1) (2026-04-01)
 
 
