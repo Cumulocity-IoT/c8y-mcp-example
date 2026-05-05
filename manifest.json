@@ -31,7 +31,7 @@
       "name": "mcp-example-http-exposed-server",
       "description": "Custom MCP example HTTP server",
       "url": "/service/mcp-example-http/mcp",
-      "type": "mcp",
+      "type": "http",
       "sendAuthentication": false
     }
   ]
