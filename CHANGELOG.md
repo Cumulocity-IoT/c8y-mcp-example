@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/Cumulocity-IoT/c8y-mcp-example/compare/v1.1.0...v2.0.0) (2026-05-06)
+
+
+### Features
+
+* update mcp lib and switch to http transport ([#4](https://github.com/Cumulocity-IoT/c8y-mcp-example/issues/4)) ([ccdba41](https://github.com/Cumulocity-IoT/c8y-mcp-example/commit/ccdba41c9d478cecb859c984358b442366147ab3))
+
+
+### BREAKING CHANGES
+
+* The MCP server is no longer reachable via SSE instead the HTTP transport is now used.
+
 # [1.1.0](https://github.com/Cumulocity-IoT/c8y-mcp-example/compare/v1.0.1...v1.1.0) (2026-04-02)
 
 
