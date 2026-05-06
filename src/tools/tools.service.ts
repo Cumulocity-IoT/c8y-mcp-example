@@ -11,7 +11,7 @@ export class ToolService {
   }
 
   @Tool({
-    name: 'c8y-hello-world',
+    name: 'c8y-hello-world-http',
     description: 'A simple tool that returns a hello world message.',
     parameters: z
       .object({
