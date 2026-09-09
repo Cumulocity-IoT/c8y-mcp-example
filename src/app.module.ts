@@ -10,6 +10,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { MicroserviceAuthMiddleware } from './auth/microservice-auth.middleware';
 import { MicroserviceAuthService } from './auth/microservice-auth.service';
 import { UserAuthMiddleware } from './auth/user-auth.middleware';
+import { AgentsModule } from './agents/agents.module';
 import { HealthModule } from './health/health.module';
 import { C8yMcpModule } from './tools/mcp.module';
 
@@ -19,6 +20,7 @@ import { C8yMcpModule } from './tools/mcp.module';
       envFilePath: ['.development.env', '.env'],
     }),
     C8yMcpModule,
+    AgentsModule,
     PrometheusModule.register({
       path: 'prometheus',
     }),

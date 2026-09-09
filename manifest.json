@@ -34,5 +34,8 @@
       "type": "http",
       "sendAuthentication": false
     }
-  ]
+  ],
+  "agents": {
+    "example-agent": "agents/example-agent.json"
+  }
 }
