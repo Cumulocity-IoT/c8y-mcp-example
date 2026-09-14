@@ -5,7 +5,7 @@
   "mcp": [
     {
       "serverName": "mcp-example-http-exposed-server",
-      "tools": ["c8y-hello-world-http"]
+      "tools": ["cumulocity-supported-series"]
     }
   ],
   "agent": {
