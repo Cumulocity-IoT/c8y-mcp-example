@@ -156,22 +156,6 @@ export class DummyAnnotationToolsService {
   }
 
   @Tool({
-    name: 'c8y-dummy-malformed-hints',
-    description:
-      'Dummy tool: hints declared with the wrong type (strings/numbers/null instead of booleans), as an untrusted server might send. Consumers should compare strictly and treat anything that is not exactly `true`/`false` as the safe, approval-requiring side.',
-    parameters: z.object({}),
-    annotations: {
-      title: 'Dummy - Malformed Hints',
-      readOnlyHint: 'true' as unknown as boolean,
-      destructiveHint: 1 as unknown as boolean,
-      openWorldHint: null as unknown as boolean,
-    },
-  })
-  malformedHints(params: EmptyParams, _context: Context) {
-    return this.echo('c8y-dummy-malformed-hints', params);
-  }
-
-  @Tool({
     name: 'c8y-dummy-custom-title',
     description:
       'Dummy tool: fully safe, but declares a human-friendly `title` annotation distinct from its tool name.',
