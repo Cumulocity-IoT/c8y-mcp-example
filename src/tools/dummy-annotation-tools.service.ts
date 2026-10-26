@@ -5,12 +5,16 @@ import { z } from 'zod';
 type EmptyParams = Record<string, never>;
 
 /**
- * Dummy tools exercising the MCP tool-annotation combinations relevant to the
- * HITL approval-policy work (c8y-ai-agents PR #793 exposes `Tool.annotations`
- * through the tools API, PR #795 derives an "approval required" preview from
- * `destructiveHint`/`readOnlyHint`/`openWorldHint`). None of these do
- * anything real - they only exist so those PRs can be tested against a live
- * MCP server with every annotation combination represented.
+ * Dummy tools exercising the MCP tool-annotation combinations relevant to user
+ * approval of tool calls in c8y-ai-agents (#793 makes approval opt-out and
+ * exposes `Tool.annotations` through the tools API, #795 configures it on an
+ * agent's Tools tab). None of these do anything real - they only exist so
+ * those PRs can be tested against a live MCP server with every annotation
+ * combination represented.
+ *
+ * Each description states what to expect: the tags on the Tools tab, whether
+ * a call asks for approval when the agent has no approval settings, and the
+ * mode "Override for this tool" starts at.
  */
 @Injectable()
 export class DummyAnnotationToolsService {
@@ -30,7 +34,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-read-only',
     description:
-      'Dummy tool: fully safe read (readOnlyHint=true, destructiveHint=false, openWorldHint=false). No approval criterion should trigger.',
+      'Dummy tool: read-only, closed-world. Expect tag "Read-only"; runs without approval by default; override starts at Never.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Read Only',
@@ -47,7 +51,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-read-only-open-world',
     description:
-      'Dummy tool: read-only but reaches external systems (readOnlyHint=true, openWorldHint=true). Isolates the "open world" approval criterion.',
+      'Dummy tool: read-only but open-world. Expect tags "Read-only" and "External systems"; asks for approval by default; override starts at Always.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Read Only, Open World',
@@ -62,9 +66,23 @@ export class DummyAnnotationToolsService {
   }
 
   @Tool({
+    name: 'c8y-dummy-read-only-open-world-undeclared',
+    description:
+      'Dummy tool: declares only readOnlyHint=true, so the missing openWorldHint counts as open-world. Expect tags "Read-only" and "External systems"; asks for approval by default; override starts at Always.',
+    parameters: z.object({}),
+    annotations: {
+      title: 'Dummy - Read Only, Open World Undeclared',
+      readOnlyHint: true,
+    },
+  })
+  readOnlyOpenWorldUndeclared(params: EmptyParams, _context: Context) {
+    return this.echo('c8y-dummy-read-only-open-world-undeclared', params);
+  }
+
+  @Tool({
     name: 'c8y-dummy-write-safe',
     description:
-      'Dummy tool: non-destructive local write (readOnlyHint=false, destructiveHint=false, openWorldHint=false). Isolates the "non read-only" approval criterion.',
+      'Dummy tool: non-destructive write, closed-world. Expect tag "Changes data"; asks for approval by default; override starts at If risky, which lets it run without approval.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Safe Write',
@@ -81,7 +99,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-write-safe-open-world',
     description:
-      'Dummy tool: non-destructive write reaching external systems (readOnlyHint=false, destructiveHint=false, openWorldHint=true).',
+      'Dummy tool: non-destructive write, open-world. Expect tags "Changes data" and "External systems"; asks for approval by default; override starts at Always.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Safe Write, Open World',
@@ -98,7 +116,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-destructive',
     description:
-      'Dummy tool: destructive local write (readOnlyHint=false, destructiveHint=true, openWorldHint=false).',
+      'Dummy tool: destructive write, closed-world. Expect tag "Destructive"; asks for approval by default; override starts at Always.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Destructive',
@@ -115,7 +133,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-destructive-open-world',
     description:
-      'Dummy tool: worst case (readOnlyHint=false, destructiveHint=true, openWorldHint=true). All three approval criteria should trigger.',
+      'Dummy tool: destructive write, open-world (worst case). Expect tags "Destructive" and "External systems"; asks for approval by default; override starts at Always.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Destructive, Open World',
@@ -132,7 +150,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-no-annotations',
     description:
-      'Dummy tool: declares no annotations at all. Per the MCP spec, consumers must treat missing hints as the worst case (not read-only, destructive, open-world) - this should behave like c8y-dummy-destructive-open-world.',
+      'Dummy tool: declares no annotations, so missing hints count as the worst case. Expect tag "Not declared"; asks for approval by default; override starts at Always.',
     parameters: z.object({}),
   })
   noAnnotations(params: EmptyParams, _context: Context) {
@@ -142,7 +160,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-read-only-destructive-contradiction',
     description:
-      'Dummy tool: contradictory hints (readOnlyHint=true AND destructiveHint=true). destructiveHint is only meaningful when readOnlyHint=false, so readOnlyHint should win and neither the destructive nor the non-read-only criterion should trigger.',
+      'Dummy tool: readOnlyHint=true and destructiveHint=true, closed-world. readOnlyHint wins. Expect tag "Read-only"; runs without approval by default; override starts at Never.',
     parameters: z.object({}),
     annotations: {
       title: 'Dummy - Contradictory Hints',
@@ -158,7 +176,7 @@ export class DummyAnnotationToolsService {
   @Tool({
     name: 'c8y-dummy-custom-title',
     description:
-      'Dummy tool: fully safe, but declares a human-friendly `title` annotation distinct from its tool name.',
+      'Dummy tool: read-only, closed-world, with a `title` annotation distinct from its name (visible in the tools API only). Runs without approval by default; override starts at Never.',
     parameters: z.object({}),
     annotations: {
       title: 'Friendly Display Name',
