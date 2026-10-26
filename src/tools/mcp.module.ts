@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ToolService } from './tools.service';
+import { DummyAnnotationToolsService } from './dummy-annotation-tools.service';
 import { McpModule, McpTransportType } from '@rekog/mcp-nest';
 import { version } from '../../package.json';
 
@@ -12,6 +13,6 @@ import { version } from '../../package.json';
       transport: [McpTransportType.STREAMABLE_HTTP],
     }),
   ],
-  providers: [ToolService],
+  providers: [ToolService, DummyAnnotationToolsService],
 })
 export class C8yMcpModule {}
